@@ -115,6 +115,15 @@ th{color:var(--sterk);font-weight:700}
 </style>
 </head>
 <body>
+<!-- Netlify Forms finner dette skjemaet ved deploy. Sida fyller det og sender
+     med fetch, så deltakeren aldri forlater sida. -->
+<form name="kortsortering" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="text" name="bot-field">
+  <input type="text" name="alias"><input type="text" name="bor"><input type="text" name="kjenner">
+  <input type="text" name="sett"><input type="text" name="antallGrupper"><input type="text" name="antallFlyttinger">
+  <textarea name="kommentar"></textarea><textarea name="grupper"></textarea><textarea name="kortTilGruppe"></textarea><textarea name="svar"></textarea>
+</form>
+
 <div class="wrap">
   <header class="topp">
     <span class="merke" aria-hidden="true"></span>
@@ -226,8 +235,10 @@ th{color:var(--sterk);font-weight:700}
 const KORT = [{"id":"18-115","nr":"115","navn":"Vennesund – Holm","type":"ferge","stopp":["Vennesund","Holm"]},{"id":"18-142","nr":"142","navn":"Brønnøysund – Sauren – Stortorgnes","type":"ferge","stopp":["Hestøya","Sauren","Brønnøysund"]},{"id":"18-152","nr":"152","navn":"Horn – Igerøy","type":"ferge","stopp":["Igerøy","Ylvingen","Horn"]},{"id":"18-153","nr":"153","navn":"Horn – Andalsvåg","type":"ferge","stopp":["Horn","Andalsvåg"]},{"id":"18-158","nr":"158","navn":"Igerøy – Tjøtta","type":"ferge","stopp":["Igerøy","Tjøtta"]},{"id":"18-162","nr":"162","navn":"Tjøtta – Forvik","type":"ferge","stopp":["Tjøtta","Mindland","Tro","Stokkasjøen","Vågsodden","Forvik"]},{"id":"18-171","nr":"171","navn":"Søvik – Herøy","type":"ferge","stopp":["Brasøy","Herøy","Søvik","Austbø"]},{"id":"18-181","nr":"181","navn":"Sandnessjøen – Dønna – Løkta","type":"ferge","stopp":["Løkta","Bjørn","Sandnessjøen"]},{"id":"18-188","nr":"188","navn":"Solfjellsjøen – Vandve","type":"ferge","stopp":["Solfjellsjøen","Vandve"]},{"id":"18-192","nr":"192","navn":"Stokkvågen – Træna","type":"ferge","stopp":["Stokkvågen","Onøy","Træna","Selvær"]},{"id":"18-211","nr":"211","navn":"Mosjøen – Hundåla","type":"ferge","stopp":["Mosjøen","Hundåla","Sørnes"]},{"id":"18-335","nr":"335","navn":"Nesna – Levang","type":"ferge","stopp":["Nesna","Levang"]},{"id":"18-336","nr":"336","navn":"Nesna – Nesnaøyene","type":"ferge","stopp":["Vikholmen","Nesna","Handnesøya","Tomma"]},{"id":"18-344","nr":"344","navn":"Stokkvågen – Onøy – Sleneset – Lovund","type":"ferge","stopp":["Stokkvågen","Onøy","Sleneset","Lovund"]},{"id":"18-412","nr":"412","navn":"Rødøybassenget","type":"ferge","stopp":["Jektvik","Rødøy","Gjerøy","Selsøyvik","Tonnes","Indre Kvarøy","Storselsøy","Nordnesøy"]},{"id":"18-414","nr":"414","navn":"Jektvik – Kilboghamn","type":"ferge","stopp":["Kilboghamn","Jektvik","Sørfjorden"]},{"id":"18-421","nr":"421","navn":"Forøy – Ågskardet","type":"ferge","stopp":["Ågskardet","Forøy"]},{"id":"18-435","nr":"435","navn":"Ørnes – Vassdalsvik – Meløysund – Bolga","type":"ferge","stopp":["Bolga","Meløysund","Vassdalsvik","Ørnes"]},{"id":"18-444","nr":"444","navn":"Sund – Horsdal – Sørarnøy","type":"ferge","stopp":["Sørarnøy","Sund","Horsdal"]},{"id":"18-538","nr":"538","navn":"Festvåg – Misten","type":"ferge","stopp":["Festvåg","Misten"]},{"id":"18-581","nr":"581","navn":"Drag – Kjøpsvik","type":"ferge","stopp":["Drag","Kjøpsvik"]},{"id":"18-611","nr":"611","navn":"Skarberget – Bognes","type":"ferge","stopp":["Skarberget","Bognes"]},{"id":"18-703","nr":"703","navn":"Bognes – Lødingen","type":"ferge","stopp":["Lødingen","Bognes"]},{"id":"18-723","nr":"723","navn":"Digermulen – Finnvik","type":"ferge","stopp":["Finnvik","Digermulen"]},{"id":"18-732","nr":"732","navn":"Melbu – Fiskebøl","type":"ferge","stopp":["Fiskebøl","Melbu"]},{"id":"18-751","nr":"751","navn":"Svolvær – Skrova – Skutvik","type":"ferge","stopp":["Skrova","Svolvær"]},{"id":"18-782","nr":"782","navn":"Bodø – Værøy – Røst – Moskenes","type":"ferge","stopp":["Bodø","Moskenes","Værøy","Røst"]},{"id":"18-111","nr":"111","navn":"Bindal – Harangsfjord","type":"hurtigbåt","stopp":["Terråk","Skotnes","Harangsfjord","Røytvoll","Bindalseidet","Hildring","Øyen","Øksningøy"]},{"id":"18-151","nr":"151","navn":"Brønnøysund – Vega","type":"hurtigbåt","stopp":["Brønnøysund","Ylvingen","Rørøy"]},{"id":"18-159","nr":"159","navn":"Sandnessjøen – Brønnøysund","type":"hurtigbåt","stopp":["Sandnessjøen","Rørøy","Ylvingen","Brønnøysund"]},{"id":"18-167","nr":"167","navn":"Tjøtta – Forvik – Visten","type":"hurtigbåt","stopp":["Tjøtta","Bærøyvågen","Forvik","Visthus","Kilvågen","Visten","Aursletta","Bønå","Vågsodden","Stokkasjøen","Grytåga","Husvika","Mindland","Tro"]},{"id":"18-172","nr":"172","navn":"Herøy-ruta","type":"hurtigbåt","stopp":["Sandvær","Langøy","Brasøy","Flostad","Sandnessjøen","Gardsøya","Kilvær","Skogsholmen","Skålvær"]},{"id":"18-191","nr":"191","navn":"Helgelandspendelen (Træna – Sandnessjøen)","type":"hurtigbåt","stopp":["Træna","Lovund","Sleneset","Onøy","Stokkvågen","Nesna","Sandnessjøen","Nordsolvær"]},{"id":"18-193","nr":"193","navn":"Lurøy-ruta","type":"hurtigbåt","stopp":["Onøy","Indre Kvarøy","Tonnes","Hestmona","Sørnesøy","Lovund","Sleneset","Stokkvågen","Aldra","Stuvland"]},{"id":"18-195","nr":"195","navn":"Træna lokalrute","type":"hurtigbåt","stopp":["Selvær","Holmen","Sandøya","Sanna","Træna"]},{"id":"18-337","nr":"337","navn":"Nesna – Nesnaøyene","type":"hurtigbåt","stopp":["Tomma","Handnesøya","Vikholmen","Nesna"]},{"id":"18-411","nr":"411","navn":"Rødøy-ruta","type":"hurtigbåt","stopp":["Myken","Rødøy","Gjerøy","Selsøyvik","Sundøy","Tonnes","Nordnesøy","Storselsøy","Gjersvikgrenda","Jektvik","Vågaholmen","Telnes"]},{"id":"18-413","nr":"413","navn":"Kilboghamn – Melfjordbotn","type":"hurtigbåt","stopp":["Kilboghamn","Melfjordbotn","Jektvik","Rødøy","Gjersvikgrenda","Sørfjorden"]},{"id":"18-433","nr":"433","navn":"Meløy-ruta","type":"hurtigbåt","stopp":["Meløysund","Støtt","Ørnes","Rendal","Sandvik","Valøy","Mesøy","Teksmona","Bolga","Grønnøy"]},{"id":"18-445","nr":"445","navn":"Bodø – Gildeskål","type":"hurtigbåt","stopp":["Sørarnøy","Våg","Bodø","Bliksvær","Mevær","Sørvær","Inndyr","Sørfugløy"]},{"id":"18-539","nr":"539","navn":"Bodø – Væran","type":"hurtigbåt","stopp":["Bodø","Sørlandegode","Vokkøy","Helligvær","Givær","Bliksvær"]},{"id":"18-585","nr":"585","navn":"Tysfjord-ruta","type":"hurtigbåt","stopp":["Storå","Kjøpsvik","Drag","Musken","Kjerrvika","Hulløyhamn"]},{"id":"18-615","nr":"615","navn":"Evenes – Kjeldebotn","type":"hurtigbåt","stopp":["Kjeldebotn","Evenes"]},{"id":"18-773","nr":"773","navn":"Reinefjorden","type":"hurtigbåt","stopp":["Reine","Rostad","Kirkefjord","Vindstad"]},{"id":"18-837","nr":"837","navn":"Stokmarknes – Innlandet","type":"hurtigbåt","stopp":["Hanøy","Brottøy","Sommerset","Helgenes","Lonkan","Kaljord","Stokmarknes","Ingelsfjord","Storå"]},{"id":"18-866","nr":"866","navn":"Øksnes vestbygd","type":"hurtigbåt","stopp":["Tunnstad","Smines","Øksnes","Myre","Børøy","Tinden","Sunderøy","Skipnes","Barkestad","Finnvåg","Austringen","Grødset","Langøy","Sigerland","Skjellfjord"]},{"id":"23-731","nr":"731","navn":"Bodø – Helgeland","type":"hurtigbåt","stopp":["Bodø","Sørarnøy","Støtt","Ørnes","Grønnøy","Bolga","Vågaholmen","Rødøy","Gjerøy","Selsøyvik","Tonnes","Indre Kvarøy","Onøy","Nesna","Sandnessjøen","Bjørn"]},{"id":"23-755","nr":"755","navn":"Bodø – Svolvær","type":"hurtigbåt","stopp":["Svolvær","Skrova","Skutvik","Bogøy","Nordskot","Helnessund","Bodø","Holkestad","Brennsund"]}];
 const KORTMAP = Object.fromEntries(KORT.map(k => [k.id, k]));
 const LAGER = "reis-kortsortering-v1";
-/* Lim inn web-app-adressen fra Google Apps Script her (se svar/README.md).
-   Tom streng: deltakeren laster ned eller kopierer svaret i stedet. */
+/* Mottak. "netlify": Netlify Forms (sida må ligge på Netlify). Ellers: lim inn
+   web-app-adressen fra Google Apps Script i SVAR_ENDEPUNKT (se svar/README.md).
+   Begge tomme: deltakeren laster ned eller kopierer svaret i stedet. */
+const MOTTAK = "netlify";
 const SVAR_ENDEPUNKT = "";
 
 /* ---- Tilstand ---- */
@@ -407,6 +418,22 @@ $("send").addEventListener("click", async () => {
   const ut = $("send-status"); ut.innerHTML = "";
   /* GitHub Pages er statisk, så svaret sendes til mottaket i SVAR_ENDEPUNKT
      (Google Apps Script, se svar/Code.gs). Tomt endepunkt: fil eller kopi. */
+  if(MOTTAK === "netlify"){
+    try{
+      const kortTilGruppe = {};
+      svar.grupper.forEach(g => g.kort.forEach(k => { kortTilGruppe[k] = g.navn; }));
+      const felt = new URLSearchParams({
+        "form-name": "kortsortering", alias: svar.deltaker.alias, bor: svar.deltaker.bor, kjenner: svar.deltaker.kjenner,
+        sett: svar.sett, antallGrupper: String(svar.grupper.length), antallFlyttinger: String(svar.antallFlyttinger),
+        kommentar: svar.kommentar, grupper: JSON.stringify(svar.grupper), kortTilGruppe: JSON.stringify(kortTilGruppe), svar: JSON.stringify(svar)
+      });
+      const r = await fetch("/", {method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"}, body: felt.toString()});
+      if(r.ok){ ut.innerHTML = `<p class="ok">Takk! Svaret ditt er sendt inn.</p>`; meld("Svaret er sendt inn."); toem(); $("send").disabled = true; return; }
+      ut.innerHTML = `<p class="varsel">Mottaket svarte ikke (${r.status}). Bruk et av alternativene under.</p>`;
+    }catch(e){
+      ut.innerHTML = `<p class="varsel">Kunne ikke sende inn automatisk. Bruk et av alternativene under.</p>`;
+    }
+  }
   if(SVAR_ENDEPUNKT){
     try{
       let ok = false;
